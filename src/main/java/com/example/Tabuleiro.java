@@ -1,5 +1,18 @@
 package com.example;
 
+/**
+ * Representa um tabuleiro de damas 8x8.
+ * 
+ * Esta classe gerencia o estado do tabuleiro de jogo, incluindo o posicionamento
+ * das peças, movimentação e captura de peças adversárias. O tabuleiro segue as
+ * regras tradicionais do jogo de damas.
+ * 
+ * O tabuleiro é representado por uma matriz 8x8 onde cada posição pode conter
+ * uma peça ou estar vazia (null).
+ * 
+ * @author Sistema de Damas
+ * @version 1.0
+ */
 public class Tabuleiro {
     private Peca[][] casas = new Peca[8][8];
 
@@ -11,6 +24,27 @@ public class Tabuleiro {
         casas[linha][coluna] = peca;
     }
 
+    /**
+     * Move uma peça no tabuleiro de damas de uma posição de origem para uma posição de destino.
+     * 
+     * O método executa as seguintes etapas:
+     * 1. Verifica se existe uma peça na posição de origem
+     * 2. Valida o tipo de movimento:
+     *    - Movimento simples (diagonal de 1 casa): move a peça se o destino estiver livre
+     *    - Movimento de captura (diagonal de 2 casas): captura a peça adversária no meio do caminho
+     * 3. Executa o movimento válido, atualizando as posições no tabuleiro
+     * 4. Remove a peça capturada (se aplicável)
+     * 5. Verifica se a peça deve ser promovida ao atingir a extremidade oposta do tabuleiro:
+     *    - Peças brancas são promovidas ao chegar na linha 0
+     *    - Peças pretas são promovidas ao chegar na linha 7
+     * 
+     * @param origemLinha linha da posição de origem (0-7)
+     * @param origemColuna coluna da posição de origem (0-7)
+     * @param destinoLinha linha da posição de destino (0-7)
+     * @param destinoColuna coluna da posição de destino (0-7)
+     * @throws IllegalArgumentException se não houver peça na origem, se o destino estiver ocupado,
+     *                                  se não for possível capturar uma peça ou se o movimento for inválido
+     */
     public void moverPeca(int origemLinha, int origemColuna, int destinoLinha, int destinoColuna) {
         Peca peca = casas[origemLinha][origemColuna];
         if (peca == null) throw new IllegalArgumentException("Não há peça na posição de origem!");

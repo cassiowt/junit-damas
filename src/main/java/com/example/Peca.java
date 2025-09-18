@@ -1,5 +1,11 @@
 package com.example;
 
+/**
+ * Representa uma peça do jogo de damas.
+ * 
+ * Uma peça possui uma cor (branca ou preta) e pode ser promovida a dama
+ * quando alcança a extremidade oposta do tabuleiro.
+ */
 public class Peca {
     public enum Cor { BRANCA, PRETA }
     private Cor cor;
