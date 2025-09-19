@@ -78,4 +78,31 @@ public class Tabuleiro {
             peca.promover();
         }
     }
+    /**
+     * Retorna uma representação gráfica do tabuleiro de damas em texto.
+     * Peças brancas: B, peças pretas: P, casas claras vazias: ., casas escuras vazias: #
+     */
+    public String toStringTabuleiro() {
+        StringBuilder sb = new StringBuilder();
+        for (int linha = 0; linha < 8; linha++) {
+            for (int coluna = 0; coluna < 8; coluna++) {
+                Peca peca = casas[linha][coluna];
+                if (peca == null) {
+                    // Casa escura quando linha + coluna é ímpar
+                    if ((linha + coluna) % 2 == 1) {
+                        sb.append("#");
+                    } else {
+                        sb.append(".");
+                    }
+                } else if (peca.getCor() == Peca.Cor.BRANCA) {
+                    sb.append("B");
+                } else {
+                    sb.append("P");
+                }
+                sb.append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }
