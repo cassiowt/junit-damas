@@ -84,20 +84,31 @@ public class Tabuleiro {
      */
     public String toStringTabuleiro() {
         StringBuilder sb = new StringBuilder();
+        
+        // Cabeçalho com números das colunas
+        sb.append("  ");
+        for (int col = 0; col < 8; col++) {
+            sb.append(col).append(" ");
+        }
+        sb.append("\n");
+        
         for (int linha = 0; linha < 8; linha++) {
+            // Número da linha no início
+            sb.append(linha).append(" ");
+            
             for (int coluna = 0; coluna < 8; coluna++) {
                 Peca peca = casas[linha][coluna];
                 if (peca == null) {
                     // Casa escura quando linha + coluna é ímpar
                     if ((linha + coluna) % 2 == 1) {
-                        sb.append("#");
-                    } else {
                         sb.append(".");
+                    } else {
+                        sb.append("_");
                     }
                 } else if (peca.getCor() == Peca.Cor.BRANCA) {
-                    sb.append("B");
+                    sb.append("b");
                 } else {
-                    sb.append("P");
+                    sb.append("p");
                 }
                 sb.append(" ");
             }
