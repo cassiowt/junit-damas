@@ -15,6 +15,8 @@ package com.example;
  */
 public class Tabuleiro {
     private Peca[][] casas = new Peca[8][8];
+    private java.util.List<Peca> capturadasBrancas = new java.util.ArrayList<>();
+    private java.util.List<Peca> capturadasPretas = new java.util.ArrayList<>();
 
     public Peca getCasa(int linha, int coluna) {
         return casas[linha][coluna];
@@ -64,6 +66,12 @@ public class Tabuleiro {
                 casas[destinoLinha][destinoColuna] = peca;
                 casas[origemLinha][origemColuna] = null;
                 casas[meioLinha][meioColuna] = null;
+                // Adiciona peça capturada à lista
+                if (capturada.getCor() == Peca.Cor.BRANCA) {
+                    capturadasBrancas.add(capturada);
+                } else {
+                    capturadasPretas.add(capturada);
+                }
             } else {
                 throw new IllegalArgumentException("Não é possível capturar!");
             }
@@ -88,14 +96,14 @@ public class Tabuleiro {
         // Cabeçalho com números das colunas
         sb.append("  ");
         for (int col = 0; col < 8; col++) {
-            sb.append(col).append(" ");
+            sb.append("\u001B[34m").append(col).append("\u001B[0m ");
         }
         sb.append("\n");
-        
+
         for (int linha = 0; linha < 8; linha++) {
             // Número da linha no início
-            sb.append(linha).append(" ");
-            
+            sb.append("\u001B[34m").append(linha).append("\u001B[0m ");
+
             for (int coluna = 0; coluna < 8; coluna++) {
                 Peca peca = casas[linha][coluna];
                 if (peca == null) {
@@ -108,9 +116,18 @@ public class Tabuleiro {
                 } else if (peca.getCor() == Peca.Cor.BRANCA) {
                     sb.append("b");
                 } else {
-                    sb.append("p");
+                    sb.append("\u001B[31mp\u001B[0m"); // p em vermelho
                 }
                 sb.append(" ");
+            }
+            // Exibe peças capturadas ao lado do tabuleiro
+            if (linha == 1) {
+                sb.append("  Capturadas brancas: ");
+                for (Peca p : capturadasBrancas) sb.append("b ");
+            }
+            if (linha == 2) {
+                sb.append("  Capturadas pretas: ");
+                for (Peca p : capturadasPretas) sb.append("\u001B[31mp\u001B[0m ");
             }
             sb.append("\n");
         }

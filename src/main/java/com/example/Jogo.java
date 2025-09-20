@@ -1,33 +1,48 @@
 package com.example;
 
 public class Jogo {
+    static Peca.Cor vez = Peca.Cor.BRANCA;
     static Tabuleiro tabuleiro = new Tabuleiro();
 
     public static void main(String[] args) {
-
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
         iniciar();
         System.out.println("Tabuleiro inicial:");
         System.out.println(tabuleiro.toStringTabuleiro());
 
-        // Movimento simples: branca avança
-        tabuleiro.moverPeca(5, 0, 4, 1);
-        System.out.println("Após mover branca (5,0) para (4,1):");
-        System.out.println(tabuleiro.toStringTabuleiro());
+        while (true) {
+            System.out.println("Vez das peças " + (vez == Peca.Cor.BRANCA ? "BRANCAS" : "PRETAS"));
+            System.out.println("Digite as coordenadas da peça que deseja mover (linha coluna):");
+            int origemLinha = scanner.nextInt();
+            int origemColuna = scanner.nextInt();
 
-        // Movimento simples: preta avança
-       tabuleiro.moverPeca(2, 1, 3, 0);
-       System.out.println("Após mover preta (2,1) para (3,0):");
-       System.out.println(tabuleiro.toStringTabuleiro());
+            Peca pecaSelecionada = tabuleiro.getCasa(origemLinha, origemColuna);
+            if (pecaSelecionada == null || pecaSelecionada.getCor() != vez) {
+                System.out.println("Selecione uma peça da cor correta!");
+                continue;
+            }
 
-       // Movimento simples: branca avança
-        tabuleiro.moverPeca(5, 2, 4, 3);
-        System.out.println("Após mover branca (5,2) para (4,3):");
-        System.out.println(tabuleiro.toStringTabuleiro());
+            System.out.println("Digite as coordenadas de destino (linha coluna):");
+            int destinoLinha = scanner.nextInt();
+            int destinoColuna = scanner.nextInt();
 
-        // Movimento de captura: preta captura branca
-        tabuleiro.moverPeca(3, 0, 5, 2);
-        System.out.println("Após preta capturar branca (3,0) para (5,2):");
-        System.out.println(tabuleiro.toStringTabuleiro());
+            try {
+                tabuleiro.moverPeca(origemLinha, origemColuna, destinoLinha, destinoColuna);
+                System.out.println("Movimento realizado!");
+                vez = (vez == Peca.Cor.BRANCA) ? Peca.Cor.PRETA : Peca.Cor.BRANCA;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Tente novamente.");
+            }
+            System.out.println(tabuleiro.toStringTabuleiro());
+
+            System.out.println("Deseja continuar jogando? (s/n)");
+            String continuar = scanner.next();
+            if (!continuar.equalsIgnoreCase("s")) {
+                break;
+            }
+        }
+        scanner.close();
     }
 
     public static void iniciar() {
